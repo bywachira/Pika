@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "rootDir": ".",
+        "outDir": "build",
+        "esModuleInterop": true,
+        "strict": true,
+        "declaration": true,
+        "noImplicitAny": true,
+        "importHelpers": true
+    },
+    "include": [
+        "src/**/*",
+        "index.d.ts"
+    ]
+}
