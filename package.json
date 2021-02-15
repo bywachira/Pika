@@ -1,5 +1,5 @@
 {
-  "name": "treda",
+  "name": "pika",
   "version": "1.0.0",
   "description": "HTML/CSS imaging service",
   "main": "index.js",
@@ -12,9 +12,8 @@
   ],
   "scripts": {
     "api:build": "yarn --cwd packages/api build",
-    "api:lint": "yarn --cwd packages/api lint",
     "api:start": "yarn --cwd packages/api start",
-    "api:dev": "yarn --cwd packages/api start:dev",
+    "api:dev": "yarn --cwd packages/api dev",
     "test": "yarn --cwd packages/api test"
   }
 }

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import cors from "cors";
 import config from "./config";
+import twitterRoutes from "./routes/twitter.routes"
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use(cors())
+
+app.use("/api/generate", twitterRoutes)
 
 const port: any = process.env.PORT || 8900;
 
@@ -28,3 +31,5 @@ mongoose.connect(config.database, {
 app.listen(port, () => {
     console.log([`⚡️[server]: server is running on localhost ${port}`])
 })
+
+export default app;
