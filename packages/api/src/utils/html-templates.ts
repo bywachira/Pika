@@ -5,8 +5,6 @@ import { formatData } from "./date";
 export const twitterTemplate = (data: ITwitterResponse): string => {
     const url: any = data.data[0].entities?.urls ? data.data[0].entities.urls[0] : null;
     const mentions: any = data.data[0].entities?.mentions ? data.data[0].entities.mentions : null;
-
-    console.log(data.data[0].text)
     return `
     <!DOCTYPE html>
     <html lang="en">

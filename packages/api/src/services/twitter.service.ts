@@ -4,6 +4,7 @@ import nodeHTMLToImage from "node-html-to-image";
 import config from "../config";
 import { ITwitterResponse } from "../interfaces";
 import { twitterTemplate } from "../utils/html-templates";
+import SpaceService from "./spaces.service";
 
 const { twitter: {
   apiKey,
@@ -85,29 +86,47 @@ class TwitterService {
       const twitterData: ITwitterResponse = await this.lookupTweet();
 
       let image: any;
-
-      console.log(twitterTemplate(twitterData))
+      let imageMeta: {
+        image: string;
+        type: string;
+        extension: string;
+      } = {
+        image: "",
+        type: "",
+        extension: ""
+      }
 
       switch (fileType) {
         case "svg":
-          image = await this.toSvg(twitterTemplate(twitterData))
-          return {
+          image = await this.htmlToBase64(twitterTemplate(twitterData))
+          imageMeta = {
             image,
-            type: "image/svg+xml"
+            type: "image/svg+xml",
+            extension: "svg"
           }
+          break;
         case "png":
-          image = await this.toSvg(twitterTemplate(twitterData))
-          return {
+          image = await this.htmlToBase64(twitterTemplate(twitterData))
+          imageMeta = {
             image,
-            type: "image/png"
+            type: "image/avif",
+            extension: "avif"
           }
+          break;
         default:
-          image = await this.toSvg(twitterTemplate(twitterData))
-          return {
+          image = await this.htmlToBase64(twitterTemplate(twitterData))
+          imageMeta = {
             image,
-            type: "image/svg+xml"
+            type: "image/svg+xml",
+            extension: "svg"
           }
+          break;
       }
+
+      const uploadData = new SpaceService().uploadToBucket(imageMeta.image, imageMeta.type, imageMeta.extension, true);
+
+      return uploadData
+
     } catch (error) {
       throw {
         ...error
@@ -115,9 +134,10 @@ class TwitterService {
     }
   }
 
-  public async toSvg(htmlString: string) {
+  public async htmlToBase64(htmlString: string) {
     const image = await nodeHTMLToImage({
-      html: htmlString
+      html: htmlString,
+      encoding: "binary"
     })
 
     return image

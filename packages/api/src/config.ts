@@ -14,6 +14,10 @@ const config: {
         accessTokenSecret: any;
     }
     redis: any;
+    spaces: {
+        key: any;
+        secret: any;
+    }
 } = {
     database: process.env.DATABASE_URL,
     secret_key: process.env.SECRET_KEY,
@@ -25,7 +29,11 @@ const config: {
         accessToken: process.env.TWITTER_ACCESS_TOKEN,
         accessTokenSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET
     },
-    redis: process.env.REDIS_URL
+    redis: process.env.REDIS_URL,
+    spaces: {
+        key: process.env.SPACES_KEY,
+        secret: process.env.SPACES_SECRET
+    }
 }
 
 export default config
