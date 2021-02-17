@@ -4,6 +4,7 @@ import morgan from "morgan";
 import cors from "cors";
 import config from "./config";
 import twitterRoutes from "./routes/twitter.routes"
+import SpacesService from "./services/spaces.service";
 
 const app = express();
 
