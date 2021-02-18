@@ -5,6 +5,7 @@ import cors from "cors";
 import config from "./config";
 import twitterRoutes from "./routes/twitter.routes"
 import SpacesService from "./services/spaces.service";
+import htmlImageRoutes from "./routes/html-image.routes";
 
 const app = express();
 
@@ -16,7 +17,8 @@ app.use(express.json());
 
 app.use(cors())
 
-app.use("/api/generate", twitterRoutes)
+app.use("/api/generate", twitterRoutes);
+app.use("/api/generate", htmlImageRoutes);
 
 const port: any = process.env.PORT || 8900;
 
