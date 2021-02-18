@@ -6,6 +6,7 @@ import config from "./config";
 import twitterRoutes from "./routes/twitter.routes"
 import SpacesService from "./services/spaces.service";
 import htmlImageRoutes from "./routes/html-image.routes";
+import qrImageRoutes from "./routes/qrcode.routes";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(cors())
 
 app.use("/api/generate", twitterRoutes);
 app.use("/api/generate", htmlImageRoutes);
+app.use("/api/generate", qrImageRoutes);
 
 const port: any = process.env.PORT || 8900;
 
