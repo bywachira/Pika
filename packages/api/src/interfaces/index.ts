@@ -50,3 +50,28 @@ export interface ITwitterResponse {
         }[]
     }
 }
+
+export interface IQrOptions {
+    logo?: string;
+    background?: string;
+    color?: string;
+    size?: number;
+    logo_size?: number;
+    // size?: number;
+    // margin?: number;
+    // correctLevel?: number;
+    // maskPattern?: number;
+    // version?: number;
+    // colorDark?: string;
+    // colorLight?: string;
+    // autoColor?: boolean;
+    // backgroundImage?: string | Buffer;
+    // backgroundDimming?: string;
+    // gifBackground?: ArrayBuffer;
+    // whiteMargin?: boolean;
+    // dotScale?: number;
+    // logoImage?: string | Buffer;
+    // logoScale?: number;
+    // logoMargin?: number;
+    // logoCornerRadius?: number;
+}

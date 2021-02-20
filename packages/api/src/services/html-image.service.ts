@@ -1,5 +1,4 @@
 import nodeHTMLToImage from "node-html-to-image";
-import config from "../config";
 import SpacesService from "./spaces.service";
 
 export default class HTMLImageService {
