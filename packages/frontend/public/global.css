@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Paytone+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap");
+
+html,
+body {
+  padding: 0px;
+  margin: 0px;
+  min-height: 100vh;
+  /* font-family: 'Source Serif Pro', serif; */
+}
+
+body::-moz-selection {
+  color: red;
+}
+body::selection {
+  color: red;
+}
