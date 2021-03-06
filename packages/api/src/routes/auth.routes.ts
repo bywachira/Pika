@@ -5,4 +5,6 @@ const router = express.Router()
 
 router.post("/authenticate", AuthMiddleware.authentication);
 
+router.get("/getStatus", AuthMiddleware.authMiddleware, AuthMiddleware.isAuthenticated)
+
 export default router;

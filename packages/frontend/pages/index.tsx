@@ -9,11 +9,11 @@ const IndexPage = () => {
       <section>
         <section className="w-full flex justify-center pt-20">
           <div>
-            <h1 className="font-copywrite text-5xl text-center max-w-3xl">
+            <h1 className="font-copywrite text-5xl text-red-600 text-center max-w-3xl">
               Save time and money with custom-fit images for your marketing
               needs
             </h1>
-            <p className="font-inter text-xl py-4 max-w-3xl text-center">
+            <p className="font-inter text-white text-xl py-4 max-w-3xl text-center">
               Make your brand stand out with modern, clear designs.
             </p>
             <div className="flex justify-center">
