@@ -8,13 +8,18 @@ import "../public/global.css";
 setup(React.createElement, prefix);
 
 function MyApp({ Component, pageProps }: any): React.ReactElement {
-  return (
-    <AppLayout>
-      <div>
-        <Component {...pageProps} />
-      </div>
-    </AppLayout>
-  );
+  const getLayout =
+    Component.getLayout || ((page: any) => <AppLayout children={page} />);
+  // return (
+  //   <AppLayout>
+  //     <div>
+  //       <Toaster position="top-center" />
+  //       <Component {...pageProps} />
+  //     </div>
+  //   </AppLayout>
+  // );
+
+  return getLayout(<Component {...pageProps} />);
 }
 
 export default MyApp;

@@ -24,6 +24,20 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
     }).catch(() => res.send({ message: "Problem logging you in" }).status(403))
 }
 
+export function isAuthenticated(req: Request, res: Response, next: NextFunction) {
+    if (res.locals.account?.email) {
+        return res.status(201).json({
+            status: "ok",
+            account: res.locals.account,
+        })
+    } else {
+        return res.status(403).json({
+            status: "fail",
+            error: "Please try logging in again"
+        })
+    }
+}
+
 export function authentication(req: Request, res: Response, next: NextFunction) {
     new AuthService()
         .authentication(req.body)

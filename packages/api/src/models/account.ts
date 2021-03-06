@@ -62,6 +62,10 @@ const accountSchema: any = new mongoose.Schema({
     third_part_auth: {
         type: Array,
         default: []
+    },
+    avatar: {
+        type: String,
+        required: true
     }
 }, {
     timestamps: true
