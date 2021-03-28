@@ -13,7 +13,7 @@ const IndexPage = () => {
               Save time and money with custom-fit images for your marketing
               needs
             </h1>
-            <p className="font-inter text-white text-xl py-4 max-w-3xl text-center">
+            <p className="font-inter text-black text-xl py-4 max-w-3xl text-center">
               Make your brand stand out with modern, clear designs.
             </p>
             <div className="flex justify-center">

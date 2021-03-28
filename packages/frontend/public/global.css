@@ -11,7 +11,7 @@ body {
   margin: 0px;
   min-height: 100vh;
   /* font-family: 'Source Serif Pro', serif; */
-  background: #000;
+  background: #fff;
 }
 
 body::-moz-selection {

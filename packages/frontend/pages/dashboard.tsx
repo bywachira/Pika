@@ -14,24 +14,24 @@ function Dashboard(): React.ReactElement {
   const { account } = useAuth();
 
   return (
-    <PageLayout>
+    <>
       <Nav />
-      <AppContent className="text-white">
-        <section className={SideMenuContainer}>
-          <ul>
-            <li>
-              
-            </li>
-          </ul>
-        </section>
-        <section className="text-white">
-          jlakdjfalkdfdafadfadfadsfasdf adfadf sf <br />
-          <br />
-          <br />
-        </section>
-      </AppContent>
-      <div>dafadfa</div>
-    </PageLayout>
+      <PageLayout>
+        <AppContent className="text-black">
+          <section className={SideMenuContainer}>
+            <ul>
+              <li></li>
+            </ul>
+          </section>
+          <section className="text-black">
+            jlakdjfalkdfdafadfadfadsfasdf adfadf sf <br />
+            <br />
+            <br />
+          </section>
+        </AppContent>
+        <div>dafadfa</div>
+      </PageLayout>
+    </>
   );
 }
 

@@ -74,7 +74,7 @@ export default function Access(): React.ReactElement {
         </aside>
         <main className="md:w-1/2 sm:w-full flex justify-center px-4 py-4">
           <section>
-            <h2 className="font-copywrite text-3xl text-white text-center max-w-2xl">
+            <h2 className="font-copywrite text-3xl text-black text-center max-w-2xl">
               Your journey starts here
             </h2>
             <section className="w-full">
