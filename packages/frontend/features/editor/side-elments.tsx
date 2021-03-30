@@ -1,4 +1,5 @@
 import React from "react";
+import { fabric } from "fabric";
 
 /**
  * TODO: List of objects to be added
@@ -6,14 +7,126 @@ import React from "react";
  * - Text - done
  * - Rectangle - done
  * - Circle - done
- * - Image Rectangle
- * - Image Circle
+ * - Image Rectangle - done
+ * - Image Circle - done
  * */
 
-export default function SideElements(): React.ReactElement {
+type SideElementProps = {
+  canvas: any;
+  setCanvas: (args: any) => void;
+};
+
+export default function SideElements(
+  props: SideElementProps
+): React.ReactElement {
+  function addCircle() {
+    const circle = new fabric.Circle({
+      top: 50,
+      left: 50,
+      radius: 50,
+      fill: "pink",
+      name: "Circle",
+    });
+
+    circle.toObject = (function (toObject: any) {
+      return function () {
+        // @ts-ignore
+        return fabric.util.object.extend(toObject.call(this), {
+          //@ts-ignore
+          name: this.name,
+        });
+      };
+    })(circle.toObject);
+
+    Object.assign(circle, {
+      name: "circle",
+    });
+    circle.set("radius", 100);
+
+    props.canvas.add(circle);
+    props.setCanvas(props.canvas);
+  }
+
+  function addRectangle() {
+    const rectangle = new fabric.Rect({
+      top: 0,
+      left: 0,
+      width: 50,
+      height: 50,
+      fill: "red",
+      name: "Rectangle",
+      backgroundColor: "red",
+    });
+
+    rectangle.toObject = (function (toObject: any) {
+      return function () {
+        // @ts-ignore
+        return fabric.util.object.extend(toObject.call(this), {
+          //@ts-ignore
+          name: this.name,
+        });
+      };
+    })(rectangle.toObject);
+
+    Object.assign(rectangle, {
+      name: "rectangle",
+    });
+
+    props.canvas?.add(rectangle);
+  }
+
+  function addText() {
+    const text = new fabric.Textbox("This is text", {
+      top: 0,
+      left: 0,
+      name: "Text",
+    });
+
+    text.toObject = (function (toObject: any) {
+      return function () {
+        // @ts-ignore
+        return fabric.util.object.extend(toObject.call(this), {
+          //@ts-ignore
+          name: this.name,
+        });
+      };
+    })(text.toObject);
+
+    Object.assign(text, {
+      name: "text",
+    });
+
+    props.canvas?.add(text);
+  }
+
+  function addImage() {
+    fabric.Image.fromURL(
+      "https://wallpaperaccess.com/full/36627.png",
+      (img: fabric.Image) => {
+        let image = img.set({ top: 0, left: 0 });
+        image.scaleToHeight(150);
+        image.scaleToWidth(150);
+        image.toObject = (function (toObject: any) {
+          return function () {
+            // @ts-ignore
+            return fabric.util.object.extend(toObject.call(this), {
+              //@ts-ignore
+              name: this.name,
+            });
+          };
+        })(image.toObject);
+
+        Object.assign(image, {
+          name: "image",
+        });
+        props.canvas?.add(image);
+      }
+    );
+  }
+
   return (
-    <section className="grid grid-rows-6 w-full gap-2 h-full">
-      <button className="p-2">
+    <section className="grid grid-rows-8 w-full gap-2 h-full">
+      <button className="p-2" onClick={addText}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -26,7 +139,7 @@ export default function SideElements(): React.ReactElement {
           <path d="M5 5v14h14V5H5zM4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm9 7v7h-2v-7H7V8h10v2h-4z"></path>
         </svg>
       </button>
-      <button className="p-2">
+      <button className="p-2" onClick={addRectangle}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 18 18"
@@ -44,7 +157,7 @@ export default function SideElements(): React.ReactElement {
           ></path>
         </svg>
       </button>
-      <button className="p-2">
+      <button className="p-2" onClick={addCircle}>
         <svg
           version="1.1"
           id="Layer_1"
@@ -82,7 +195,7 @@ export default function SideElements(): React.ReactElement {
           <g></g>
         </svg>
       </button>
-      <button className="p-2">
+      <button className="p-2" onClick={addImage}>
         <svg
           version="1.1"
           id="Capa_1"
@@ -94,7 +207,7 @@ export default function SideElements(): React.ReactElement {
           width="32"
           className="fill-current text-gray-400"
         >
-          <title>Image</title>
+          <title>Rounded Image</title>
           <g>
             <path
               d="M264.959,9.35H33.787C15.153,9.35,0,24.498,0,43.154v212.461c0,18.634,15.153,33.766,33.787,33.766
@@ -134,6 +247,7 @@ export default function SideElements(): React.ReactElement {
           width="32"
           className="fill-current text-gray-400"
         >
+          <title>Avatar</title>
           <g>
             <g>
               <path
@@ -179,26 +293,15 @@ export default function SideElements(): React.ReactElement {
           version="1.1"
           id="Capa_1"
           xmlns="http://www.w3.org/2000/svg"
-          x="0px"
-          y="0px"
-          viewBox="0 0 512 512"
           height="32"
           width="32"
+          x="0px"
+          y="0px"
           className="fill-current text-gray-400"
+          viewBox="0 0 490 490"
         >
-          <g>
-            <g>
-              <g>
-                <path d="M0,64v384h512V64H0z M480,416H32V96h448V416z" />
-                <polygon points="96,160 160,160 160,128 64,128 64,224 96,224 			" />
-                <polygon points="448,288 416,288 416,352 352,352 352,384 448,384 			" />
-                <rect x="192" y="128" width="32" height="32" />
-                <rect x="64" y="256" width="32" height="32" />
-                <rect x="416" y="224" width="32" height="32" />
-                <rect x="288" y="352" width="32" height="32" />
-              </g>
-            </g>
-          </g>
+          <title>Triangle</title>
+          <path d="M0,472.982h490L245.015,17.018L0,472.982z M51.212,442.368L245.015,81.684l193.773,360.684H51.212z" />
           <g></g>
           <g></g>
           <g></g>

@@ -17,6 +17,9 @@ const config: {
     spaces: {
         key: any;
         secret: any;
+    },
+    google: {
+        fonts: any;
     }
 } = {
     database: process.env.DATABASE_URL,
@@ -33,6 +36,9 @@ const config: {
     spaces: {
         key: process.env.SPACES_KEY,
         secret: process.env.SPACES_SECRET
+    },
+    google: {
+        fonts: process.env.FONTS_API_KEY
     }
 }
 

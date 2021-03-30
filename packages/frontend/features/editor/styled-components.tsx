@@ -15,9 +15,12 @@ export const CanvasContainer = styled("main")`
   flex: 1 1 auto;
   overflow-y: scroll;
   overflow-x: scroll;
+  display: flex;
+  justify-content: center;
+  place-items: center;
 
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 2px;
   }
 
   &::-webkit-scrollbar-thumb {
