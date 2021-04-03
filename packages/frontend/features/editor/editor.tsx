@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-// import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 // import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 import Hotkeys from "react-hot-keys";
 import { fabric } from "fabric";
@@ -15,6 +14,9 @@ import {
   initCenteringGuidelines,
 } from "../../helpers/canvas";
 import useFonts from "../../hooks/useFonts";
+import { useMemo } from "react";
+import { useCallback } from "react";
+import { css } from "goober";
 
 interface ISnapshot {
   canvas_height: number;
@@ -54,22 +56,72 @@ export interface IObject {
   width: number;
   src?: string;
   name?: string;
+  id: string;
 }
 
+const Canvas = css`
+  background: #ffffff;
+`;
+
 export default function Editor(): React.ReactElement {
-  const [canvas, setCanvas] = useState<any>(undefined);
+  const [canvas, setCanvas] = useState<any>();
+  const [canvasHistory, setCanvasHistory] = useState<any>([]);
+  const [canvasState, setCanvasState] = useState<any>([]);
+  const canvasRef: any = useRef();
   // const { editor, onReady, selectedObjects } = useFabricJSEditor();
-  const [snapshot, setSnapshot] = useState<ISnapshot>({
-    canvas_height: 360,
+  const [snapshot] = useState<ISnapshot>({
+    canvas_height: 300,
     canvas_width: 720,
     canvas_bg: "#fff",
   });
   const [layers, setLayers] = useState<IObject[]>([]);
   const { fonts } = useFonts();
+  const [currentObject, setCurrentObject] = useState<any>({});
+  const [zoomData, setZoomData] = useState({
+    type: true,
+    limitToBounds: true,
+    panningEnabled: true,
+    transformEnabled: true,
+    pinchEnabled: true,
+    limitToWrapper: false,
+    disabled: false,
+    dbClickEnabled: true,
+    lockAxisX: false,
+    lockAxisY: false,
+    velocityEqualToMove: true,
+    enableWheel: true,
+    enableTouchPadPinch: true,
+    enableVelocity: true,
+    limitsOnWheel: false,
+  });
+
+  const onObjectModified = useCallback(
+    (e: any) => {
+      const newCanvasState = e.target.canvas.toJSON();
+      setCanvasState(newCanvasState);
+      setCanvasHistory((history: any) =>
+        [...history, newCanvasState].slice(-4)
+      );
+      setCurrentObject((prev: any) => ({ ...e.target }));
+    },
+    [setCanvasState, setCanvasHistory]
+  );
 
   useEffect(() => {
-    setCanvas(initCanvas());
-  }, []);
+    // setCanvas(initCanvas());
+    const canvas: any = new fabric.Canvas(canvasRef.current, {
+      height: snapshot.canvas_height,
+      width: snapshot.canvas_width,
+      fill: snapshot.canvas_bg,
+    });
+
+    canvas.loadFromJSON([], () => {});
+
+    canvas.on("object:modified", onObjectModified);
+    setCanvas(canvas);
+
+    return () => canvas.dispose();
+  }, [canvasRef, onObjectModified, setCanvas]);
 
   useEffect(() => {
     if (canvas) {
@@ -86,20 +138,12 @@ export default function Editor(): React.ReactElement {
     });
   }
 
-  useEffect(() => {
-    if (canvas) {
-      setLayers(canvas?.toJSON().objects);
-    }
-  }, [canvas]);
-
-  console.log(canvas?.getObjects());
-
   canvas?.on("object:added", () => {
-    setLayers(canvas?.toJSON().objects);
+    setLayers(canvas?.getObjects());
   });
 
   canvas?.on("object:removed", () => {
-    setLayers(canvas?.toJSON().objects);
+    setLayers(canvas?.getObjects());
   });
 
   canvas?.on("selection:cleared", () => {
@@ -109,7 +153,6 @@ export default function Editor(): React.ReactElement {
   function onKeyUp(keyname: string, e: any, handle: any) {}
 
   function onKeyDown(keyname: string, e: any, handle: any) {
-    console.log({ keyname });
     if (keyname === "backspace" || keyname === "delete") {
       e.preventDefault();
       removeObject();
@@ -159,8 +202,26 @@ export default function Editor(): React.ReactElement {
     canvas?.requestRenderAll();
   }
 
+  // const CURRENT_STATE = 1;
+
+  const layerComponent = useMemo(
+    () => (
+      <ElementEditor
+        objectState={currentObject}
+        canvas={canvas}
+        layers={layers}
+      />
+    ),
+    [currentObject]
+  );
+
+  // const objectSelection = useMemo(() => {
+  //   return ;
+  // }, [CURRENT_STATE]);
+
   return (
     <EditorContainer>
+      {console.log("rendered")}
       <SideElements canvas={canvas} setCanvas={setCanvas} />
       <Hotkeys
         onKeyDown={onKeyDown}
@@ -170,23 +231,54 @@ export default function Editor(): React.ReactElement {
         <CanvasContainer>
           {/* <FabricJSCanvas className="sample-canvas" onReady={onReady} /> */}
           {/* <TransformWrapper
-          defaultScale={1}
-          defaultPositionX={200}
-          defaultPositionY={100}
-        >
-          {({ zoomIn, zoomOut, resetTransform, ...rest }: any) => (
-            <>
-              <TransformComponent> */}
-          <canvas id="image-editor" />
+            defaultScale={0.5}
+            defaultPositionX={200}
+            defaultPositionY={100}
+            options={{
+              limitToBounds: zoomData.limitToBounds,
+              transformEnabled: zoomData.transformEnabled,
+              disabled: zoomData.disabled,
+              limitToWrapper: zoomData.limitToWrapper,
+            }}
+            pan={{
+              disabled: !zoomData.panningEnabled,
+              lockAxisX: zoomData.lockAxisX,
+              lockAxisY: zoomData.lockAxisY,
+              velocityEqualToMove: zoomData.velocityEqualToMove,
+              velocity: zoomData.enableVelocity,
+            }}
+            pinch={{ disabled: !zoomData.pinchEnabled }}
+            doubleClick={{ disabled: !zoomData.dbClickEnabled }}
+            wheel={{
+              wheelEnabled: zoomData.enableWheel,
+              touchPadEnabled: zoomData.enableTouchPadPinch,
+              limitsOnWheel: zoomData.limitsOnWheel,
+            }}
+          >
+            {({
+              zoomIn,
+              zoomOut,
+              resetTransform,
+              setDefaultState,
+              positionX,
+              positionY,
+              scale,
+              previousScale,
+              options,
+              ...rest
+            }: any) => (
+              <React.Fragment>
+                <TransformComponent> */}
+          <div style={{ background: "#fff" }}>
+            <canvas ref={canvasRef} />
+          </div>
           {/* </TransformComponent>
-            </>
-          )}
-        </TransformWrapper> */}
+              </React.Fragment>
+            )} */}
+          {/* </TransformWrapper> */}
         </CanvasContainer>
       </Hotkeys>
-      <AsideSection>
-        <ElementEditor layers={layers} />
-      </AsideSection>
+      <AsideSection>{layerComponent}</AsideSection>
     </EditorContainer>
   );
 }

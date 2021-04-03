@@ -1,15 +1,6 @@
 import React from "react";
 import { fabric } from "fabric";
-
-/**
- * TODO: List of objects to be added
- * - Image -done
- * - Text - done
- * - Rectangle - done
- * - Circle - done
- * - Image Rectangle - done
- * - Image Circle - done
- * */
+import { generateId } from "../../helpers/random_string";
 
 type SideElementProps = {
   canvas: any;
@@ -21,10 +12,11 @@ export default function SideElements(
 ): React.ReactElement {
   function addCircle() {
     const circle = new fabric.Circle({
-      top: 50,
-      left: 50,
-      radius: 50,
-      fill: "pink",
+      top: 0,
+      left: 0,
+      // type: "circle",
+      radius: 25,
+      fill: "#1e6f5c",
       name: "Circle",
     });
 
@@ -34,16 +26,22 @@ export default function SideElements(
         return fabric.util.object.extend(toObject.call(this), {
           //@ts-ignore
           name: this.name,
+          //@ts-ignore
+          id: this.id,
+          //@ts-ignore
+          objectType: this.objectType,
         });
       };
     })(circle.toObject);
 
     Object.assign(circle, {
       name: "circle",
+      id: generateId(16),
+      objectType: "circle"
     });
     circle.set("radius", 100);
 
-    props.canvas.add(circle);
+    props.canvas?.add(circle);
     props.setCanvas(props.canvas);
   }
 
@@ -51,11 +49,11 @@ export default function SideElements(
     const rectangle = new fabric.Rect({
       top: 0,
       left: 0,
+      // type: "rectangle",
       width: 50,
       height: 50,
       fill: "red",
       name: "Rectangle",
-      backgroundColor: "red",
     });
 
     rectangle.toObject = (function (toObject: any) {
@@ -64,12 +62,18 @@ export default function SideElements(
         return fabric.util.object.extend(toObject.call(this), {
           //@ts-ignore
           name: this.name,
+          //@ts-ignore
+          id: this.id,
+          //@ts-ignore
+          objectType: this.objectType,
         });
       };
     })(rectangle.toObject);
 
     Object.assign(rectangle, {
       name: "rectangle",
+      id: generateId(16),
+      objectType: "rectangle"
     });
 
     props.canvas?.add(rectangle);
@@ -80,6 +84,7 @@ export default function SideElements(
       top: 0,
       left: 0,
       name: "Text",
+      // type: "text",
     });
 
     text.toObject = (function (toObject: any) {
@@ -88,12 +93,18 @@ export default function SideElements(
         return fabric.util.object.extend(toObject.call(this), {
           //@ts-ignore
           name: this.name,
+          //@ts-ignore
+          id: this.id,
+          //@ts-ignore
+          objectType: this.objectType,
         });
       };
     })(text.toObject);
 
     Object.assign(text, {
       name: "text",
+      id: generateId(16),
+      objectType: "text"
     });
 
     props.canvas?.add(text);
@@ -103,7 +114,11 @@ export default function SideElements(
     fabric.Image.fromURL(
       "https://wallpaperaccess.com/full/36627.png",
       (img: fabric.Image) => {
-        let image = img.set({ top: 0, left: 0 });
+        let image = img.set({
+          top: 0,
+          left: 0,
+          // type: "image"
+        });
         image.scaleToHeight(150);
         image.scaleToWidth(150);
         image.toObject = (function (toObject: any) {
@@ -118,8 +133,129 @@ export default function SideElements(
 
         Object.assign(image, {
           name: "image",
+          id: generateId(16),
+          objectType: "image"
         });
         props.canvas?.add(image);
+      }
+    );
+  }
+
+  function addTriangle() {
+    const triangle = new fabric.Triangle({
+      top: 0,
+      left: 0,
+      fill: "red",
+      // type: "triangle",
+    });
+
+    triangle.toObject = (function (toObject: any) {
+      return function () {
+        // @ts-ignore
+        return fabric.util.object.extend(toObject.call(this), {
+          //@ts-ignore
+          name: this.name,
+          //@ts-ignore
+          id: this.id,
+          //@ts-ignore
+          objectType: this.objectType,
+        });
+      };
+    })(triangle.toObject);
+
+    Object.assign(triangle, {
+      name: "triangle",
+      id: generateId(16),
+      objectType: "triangle"
+    });
+
+    props.canvas?.add(triangle);
+  }
+
+  // function addAvatar() {
+  //   fabric.Image.fromURL(
+  //     "https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/user_photos/000/876/317/datas/profile.jpg",
+  //     (img: any) => {
+  //       img.scale(1.0).set({
+  //         stroke: "white",
+  //         strokeWidth: 100,
+  //         clipTo: (ctx: any) => {
+  //           ctx.arc(0, 0, 50, 0, Math.PI * 2, true);
+  //         },
+  //       });
+  //       let image = img.set({ top: 0, left: 0 });
+
+  //       image.toObject = (function (toObject: any) {
+  //         return function () {
+  //           // @ts-ignore
+  //           return fabric.util.object.extend(toObject.call(this), {
+  //             //@ts-ignore
+  //             name: this.name,
+  //           });
+  //         };
+  //       })(image.toObject);
+
+  //       Object.assign(image, {
+  //         name: "image",
+  //       });
+  //       props.canvas?.add(image);
+  //     }
+  //   );
+  // }
+
+  function addAvatar() {
+    const rect = new fabric.Rect({
+      left: 0,
+      top: 0,
+      width: 120,
+      height: 120,
+      rx: 60,
+      ry: 60,
+      name: "avatar",
+    });
+
+    rect.toObject = (function (toObject: any) {
+      return function () {
+        // @ts-ignore
+        return fabric.util.object.extend(toObject.call(this), {
+          //@ts-ignore
+          name: this.name,
+          //@ts-ignore
+          id: this.id,
+          //@ts-ignore
+          objectType: this.objectType,
+        });
+      };
+    })(rect.toObject);
+
+    Object.assign(rect, {
+      name: "image",
+      id: generateId(16),
+      objectType: "avatar"
+    });
+
+    props.canvas?.add(rect);
+
+    fabric.util.loadImage(
+      "https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/user_photos/000/876/317/datas/profile.jpg",
+      (img: HTMLImageElement) => {
+        // rect.setPatternFill({
+        //   source: img,
+        //   repeat: "no-repeat",
+        //   patternTransform: [0.2, 0, 0, 0.2, 0, 0],
+        // });
+        rect.set(
+          "fill",
+          new fabric.Pattern({
+            source: img,
+            repeat: "no-repeat",
+            patternTransform: [0.67, 0, 0, 0.67, 0, 0],
+          })
+        );
+        rect.scaleToHeight(150);
+        rect.scaleToWidth(150);
+
+        props.canvas?.renderAll();
       }
     );
   }
@@ -235,7 +371,7 @@ export default function SideElements(
           <g></g>
         </svg>
       </button>
-      <button className="p-2">
+      <button className="p-2" onClick={addAvatar}>
         <svg
           version="1.1"
           id="Capa_1"
@@ -288,7 +424,7 @@ export default function SideElements(
           <g></g>
         </svg>
       </button>
-      <button className="p-2">
+      <button className="p-2" onClick={addTriangle}>
         <svg
           version="1.1"
           id="Capa_1"

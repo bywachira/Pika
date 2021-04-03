@@ -42,3 +42,21 @@ export const MetaSplit = styled("section")`
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 `;
+
+export const SplitInput = styled("section")`
+  display: grid;
+  grid-template-columns: repeat(2, 146px);
+  grid-template-rows: 40px;
+  grid-column-gap: 8px;
+  grid-row-gap: 4px;
+  margin: 0px 0px 16px 0px;
+`;
+
+export const FullInput = styled("section")`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 40px;
+  grid-column-gap: 0px;
+  margin: 0px 0px 16px 0px;
+  grid-row-gap: 0px;
+`;

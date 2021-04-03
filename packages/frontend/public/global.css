@@ -20,3 +20,7 @@ body::-moz-selection {
 body::selection {
   color: red;
 }
+
+canvas {
+  /* background-color: #fff !important; */
+}

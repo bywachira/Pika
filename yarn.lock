@@ -4439,6 +4439,11 @@ react-dom@^16.12.0:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
+react-hooks-worker@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-hooks-worker/-/react-hooks-worker-1.0.0.tgz#1f715542cf6ce151b33140c3d81716e2c7da21b9"
+  integrity sha512-N+W1SLGb4rEuuTLZCcfZaAWQScscYzd+WS7aa5eS3pXC0nL/vMbJV/HUOWS2c0cupUqDUFZqgXa+rOZM8ckdSA==
+
 react-hot-keys@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/react-hot-keys/-/react-hot-keys-2.6.2.tgz#32fba45d9bf854a12f75994f421cb7047e5a3338"

@@ -33,7 +33,8 @@ export function isAuthenticated(req: Request, res: Response, next: NextFunction)
     } else {
         return res.status(403).json({
             status: "fail",
-            error: "Please try logging in again"
+            error: "Please try logging in again",
+            auth: false,
         })
     }
 }

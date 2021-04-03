@@ -4,6 +4,7 @@ import { firebase } from "./firebase";
 import toast from "react-hot-toast";
 import { userInfo } from "os";
 import Loader from "./components/loader";
+import router from "next/router";
 
 const client = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_API,
@@ -54,6 +55,9 @@ export function AuthProvider({ children }: any) {
         delete axios.defaults.headers.common["Authorization"];
         toast.error(error.response.data.error);
         setIsLoading(false);
+        localStorage.clear();
+
+        router.push(`/access`);
       }
     });
   }
@@ -74,6 +78,9 @@ export function AuthProvider({ children }: any) {
       } else {
         delete axios.defaults.headers.common["Authorization"];
         toast.error("Please try logging in");
+        localStorage.clear();
+
+        router.push(`/access`);
       }
     }, 10 * 60 * 1000);
     return () => clearInterval(handle);
