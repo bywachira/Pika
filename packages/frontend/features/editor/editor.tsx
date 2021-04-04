@@ -70,8 +70,8 @@ export default function Editor(): React.ReactElement {
   const canvasRef: any = useRef();
   // const { editor, onReady, selectedObjects } = useFabricJSEditor();
   const [snapshot] = useState<ISnapshot>({
-    canvas_height: 300,
-    canvas_width: 720,
+    canvas_height: 480,
+    canvas_width: 480,
     canvas_bg: "#fff",
   });
   const [layers, setLayers] = useState<IObject[]>([]);
@@ -103,6 +103,7 @@ export default function Editor(): React.ReactElement {
         [...history, newCanvasState].slice(-4)
       );
       setCurrentObject((prev: any) => ({ ...e.target }));
+      setLayers((prev) => [...e.target.canvas.getObjects()]);
     },
     [setCanvasState, setCanvasHistory]
   );
@@ -118,10 +119,42 @@ export default function Editor(): React.ReactElement {
     canvas.loadFromJSON([], () => {});
 
     canvas.on("object:modified", onObjectModified);
+    canvas.on("objects:scaling", (e: any) => handleScaling(e));
+    canvas.on("object:added", (e: any) =>
+      setCurrentObject((prev: any) => ({ ...e.target }))
+    );
+    canvas.on("object:removed", (e: any) =>
+      setCurrentObject((prev: any) => ({ ...{} }))
+    );
+    canvas.on("selection:created", () =>
+      setCurrentObject((prev: any) => ({ ...canvas.getActiveObject() }))
+    );
+    canvas.on("selection:updated", () =>
+      setCurrentObject((prev: any) => ({ ...canvas.getActiveObject() }))
+    );
     setCanvas(canvas);
 
     return () => canvas.dispose();
   }, [canvasRef, onObjectModified, setCanvas]);
+
+  function handleScaling(options: any) {
+    let obj = options.target;
+    let boundingRect = obj.getBoundingRect(true);
+    if (
+      boundingRect.left < 0 ||
+      boundingRect.top < 0 ||
+      boundingRect.left + boundingRect.width > canvas.getWidth() ||
+      boundingRect.top + boundingRect.height > canvas.getHeight()
+    ) {
+      obj.top = obj._stateProperties.top;
+      obj.left = obj._stateProperties.left;
+      obj.angle = obj._stateProperties.angle;
+      obj.scaleX = obj._stateProperties.scaleX;
+      obj.scaleY = obj._stateProperties.scaleY;
+      obj.setCoords();
+      obj.saveState();
+    }
+  }
 
   useEffect(() => {
     if (canvas) {
@@ -130,27 +163,9 @@ export default function Editor(): React.ReactElement {
     }
   }, [canvas]);
 
-  function initCanvas() {
-    return new fabric.Canvas("image-editor", {
-      height: snapshot.canvas_height,
-      width: snapshot.canvas_width,
-      backgroundColor: snapshot.canvas_bg,
-    });
+  function onKeyUp(keyname: string, e: any, handle: any) {
+    console.log({ keyname, e, handle });
   }
-
-  canvas?.on("object:added", () => {
-    setLayers(canvas?.getObjects());
-  });
-
-  canvas?.on("object:removed", () => {
-    setLayers(canvas?.getObjects());
-  });
-
-  canvas?.on("selection:cleared", () => {
-    ungroupObjects();
-  });
-
-  function onKeyUp(keyname: string, e: any, handle: any) {}
 
   function onKeyDown(keyname: string, e: any, handle: any) {
     if (keyname === "backspace" || keyname === "delete") {
@@ -191,16 +206,16 @@ export default function Editor(): React.ReactElement {
     canvas?.requestRenderAll();
   }
 
-  function ungroupObjects() {
-    if (!canvas?.getActiveObject()) {
-      return;
-    }
-    if (canvas?.getActiveObject().type !== "group") {
-      return;
-    }
-    canvas?.getActiveObject().toActiveSelection();
-    canvas?.requestRenderAll();
-  }
+  // function ungroupObjects() {
+  //   if (!canvas?.getActiveObject()) {
+  //     return;
+  //   }
+  //   if (canvas?.getActiveObject().type !== "group") {
+  //     return;
+  //   }
+  //   canvas?.getActiveObject().toActiveSelection();
+  //   canvas?.requestRenderAll();
+  // }
 
   // const CURRENT_STATE = 1;
 
@@ -210,6 +225,7 @@ export default function Editor(): React.ReactElement {
         objectState={currentObject}
         canvas={canvas}
         layers={layers}
+        setCurrentObject={setCurrentObject}
       />
     ),
     [currentObject]
@@ -221,7 +237,6 @@ export default function Editor(): React.ReactElement {
 
   return (
     <EditorContainer>
-      {console.log("rendered")}
       <SideElements canvas={canvas} setCanvas={setCanvas} />
       <Hotkeys
         onKeyDown={onKeyDown}

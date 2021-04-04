@@ -1,8 +1,9 @@
 import React from "react";
 import { FullInput, SplitInput } from "./styled-components";
 import Input from "../../components/input/input";
+import { singleDecimal } from "../../helpers/number";
 
-export default function CircleStateEditor({
+export default function ObjectStateEditor({
   object,
   propertyUpdate,
 }: {
@@ -14,17 +15,21 @@ export default function CircleStateEditor({
     height: number;
     angle: number;
     name: string;
+    scaleX: number;
+    scaleY: number;
   };
   propertyUpdate: (
     name: string,
     value: string | number | { id: string; value: string | number }
   ) => void;
 }): React.ReactElement {
-  function onChange(
-    name: string,
-    value: number | string | { id: string; value: string | number }
-  ) {
-    propertyUpdate(name, value);
+  console.log(object);
+  function onChange(name: string, value: any, type: string) {
+    if (type === "number") {
+      propertyUpdate(name, parseFloat(value));
+    } else {
+      propertyUpdate(name, value);
+    }
   }
 
   return (
@@ -32,13 +37,17 @@ export default function CircleStateEditor({
       <SplitInput>
         <Input
           name="width"
-          value={object.width}
+          value={singleDecimal(
+            object.scaleX ? object.width * object.scaleX : object.width
+          )}
           onChange={onChange}
           type="number"
         />
         <Input
           name="height"
-          value={object.height}
+          value={singleDecimal(
+            object.scaleY ? object.height * object.scaleY : object.height
+          )}
           onChange={onChange}
           type="number"
         />
@@ -46,13 +55,13 @@ export default function CircleStateEditor({
       <SplitInput>
         <Input
           name="top"
-          value={object.top}
+          value={singleDecimal(object.top)}
           onChange={onChange}
           type="number"
         />
         <Input
           name="left"
-          value={object.left}
+          value={singleDecimal(object.left)}
           onChange={onChange}
           type="number"
         />
@@ -78,6 +87,8 @@ export default function CircleStateEditor({
           value={object.angle}
           onChange={onChange}
           type="number"
+          max={360}
+          min={-360}
         />
       </SplitInput>
     </section>

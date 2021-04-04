@@ -16,7 +16,7 @@ export default function SideElements(
       left: 0,
       // type: "circle",
       radius: 25,
-      fill: "#1e6f5c",
+      fill: "#e40017",
       name: "Circle",
     });
 
@@ -52,7 +52,7 @@ export default function SideElements(
       // type: "rectangle",
       width: 50,
       height: 50,
-      fill: "red",
+      fill: "#e40017",
       name: "Rectangle",
     });
 
@@ -145,8 +145,10 @@ export default function SideElements(
     const triangle = new fabric.Triangle({
       top: 0,
       left: 0,
-      fill: "red",
+      fill: "#e40017",
       // type: "triangle",
+      height: 50,
+      width: 50
     });
 
     triangle.toObject = (function (toObject: any) {

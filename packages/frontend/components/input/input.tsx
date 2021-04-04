@@ -1,14 +1,13 @@
 import React from "react";
 
 type InputProps = {
-  onChange: (
-    name: string,
-    value: number | string | { id: string; value: string | number }
-  ) => void;
+  onChange: (name: string, value: number | string, type: string) => void;
   name: string;
   value: string | number;
   type: string;
   inputRef?: React.LegacyRef<HTMLInputElement>;
+  max?: number;
+  min?: number;
 };
 
 export default function InputComponent(props: InputProps): React.ReactElement {
@@ -19,12 +18,21 @@ export default function InputComponent(props: InputProps): React.ReactElement {
       </section>
       <input
         type={props.type}
-        className="w-full bg-gray-100 px-2 py-1 outline-none"
+        className={`w-full bg-gray-100 ${
+          props.type !== "color" && "px-2 py-1 text-xs"
+        } outline-none`}
         value={props.value}
         onChange={(e: any) => {
           const value = e.target.value;
 
-          props.onChange(props.name, value);
+          if (props.type === "number") {
+          }
+
+          props.onChange(
+            props.name,
+            props.type === "number" ? parseFloat(value) : value,
+            props.type
+          );
         }}
         ref={props.inputRef}
       />

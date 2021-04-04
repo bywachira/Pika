@@ -45,7 +45,7 @@ export const MetaSplit = styled("section")`
 
 export const SplitInput = styled("section")`
   display: grid;
-  grid-template-columns: repeat(2, 146px);
+  grid-template-columns: repeat(2, 140px);
   grid-template-rows: 40px;
   grid-column-gap: 8px;
   grid-row-gap: 4px;
