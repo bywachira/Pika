@@ -3,7 +3,7 @@ import { FullInput, SplitInput } from "./styled-components";
 import Input from "../../components/input/input";
 import { singleDecimal } from "../../helpers/number";
 
-export default function ObjectStateEditor({
+export default function TextStateEditor({
   object,
   propertyUpdate,
 }: {

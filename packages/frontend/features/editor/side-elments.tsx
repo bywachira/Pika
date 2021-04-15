@@ -37,7 +37,7 @@ export default function SideElements(
     Object.assign(circle, {
       name: "circle",
       id: generateId(16),
-      objectType: "circle"
+      objectType: "circle",
     });
     circle.set("radius", 100);
 
@@ -73,7 +73,7 @@ export default function SideElements(
     Object.assign(rectangle, {
       name: "rectangle",
       id: generateId(16),
-      objectType: "rectangle"
+      objectType: "rectangle",
     });
 
     props.canvas?.add(rectangle);
@@ -85,6 +85,7 @@ export default function SideElements(
       left: 0,
       name: "Text",
       // type: "text",
+      fontSize: 12,
     });
 
     text.toObject = (function (toObject: any) {
@@ -104,7 +105,7 @@ export default function SideElements(
     Object.assign(text, {
       name: "text",
       id: generateId(16),
-      objectType: "text"
+      objectType: "text",
     });
 
     props.canvas?.add(text);
@@ -134,7 +135,7 @@ export default function SideElements(
         Object.assign(image, {
           name: "image",
           id: generateId(16),
-          objectType: "image"
+          objectType: "image",
         });
         props.canvas?.add(image);
       }
@@ -148,7 +149,7 @@ export default function SideElements(
       fill: "#e40017",
       // type: "triangle",
       height: 50,
-      width: 50
+      width: 50,
     });
 
     triangle.toObject = (function (toObject: any) {
@@ -168,7 +169,7 @@ export default function SideElements(
     Object.assign(triangle, {
       name: "triangle",
       id: generateId(16),
-      objectType: "triangle"
+      objectType: "triangle",
     });
 
     props.canvas?.add(triangle);
@@ -233,7 +234,7 @@ export default function SideElements(
     Object.assign(rect, {
       name: "image",
       id: generateId(16),
-      objectType: "avatar"
+      objectType: "avatar",
     });
 
     props.canvas?.add(rect);
