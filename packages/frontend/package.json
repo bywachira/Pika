@@ -8,7 +8,11 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@craftjs/core": "^0.1.0-beta.16",
+    "@types/fabric": "^4.2.3",
     "axios": "^0.21.1",
+    "fabric": "^4.3.1",
+    "fabricjs-react": "^1.0.8",
     "firebase": "^8.2.9",
     "goober": "^2.0.33",
     "goober-autoprefixer": "^1.2.1",
@@ -16,7 +20,10 @@
     "nookies": "^2.5.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-hot-toast": "^1.0.2"
+    "react-hooks-worker": "^1.0.0",
+    "react-hot-keys": "^2.6.2",
+    "react-hot-toast": "^1.0.2",
+    "react-zoom-pan-pinch": "^1.6.1"
   },
   "devDependencies": {
     "@types/node": "^12.12.21",

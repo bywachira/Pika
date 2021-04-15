@@ -10,6 +10,7 @@ import twitterRoutes from "./routes/twitter.routes"
 import htmlImageRoutes from "./routes/html-image.routes";
 import qrImageRoutes from "./routes/qrcode.routes";
 import authRoutes from "./routes/auth.routes";
+import thirdPartyRoutes from "./routes/third-party.routes";
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(cors())
 app.use("/api/generate", twitterRoutes);
 app.use("/api/generate", htmlImageRoutes);
 app.use("/api/generate", qrImageRoutes);
+app.use("/api/third-party", thirdPartyRoutes);
 app.use("/api", authRoutes);
 
 const port: any = process.env.PORT || 8900;
