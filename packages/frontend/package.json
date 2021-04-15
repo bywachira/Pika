@@ -5,7 +5,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "@craftjs/core": "^0.1.0-beta.16",

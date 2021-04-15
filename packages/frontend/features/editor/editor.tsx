@@ -13,10 +13,8 @@ import {
   initAligningGuidelines,
   initCenteringGuidelines,
 } from "../../helpers/canvas";
-import useFonts from "../../hooks/useFonts";
 import { useMemo } from "react";
 import { useCallback } from "react";
-import { css } from "goober";
 
 interface ISnapshot {
   canvas_height: number;
@@ -59,14 +57,11 @@ export interface IObject {
   id: string;
 }
 
-const Canvas = css`
-  background: #ffffff;
-`;
-
 export default function Editor(): React.ReactElement {
   const [canvas, setCanvas] = useState<any>();
   const [canvasHistory, setCanvasHistory] = useState<any>([]);
   const [canvasState, setCanvasState] = useState<any>([]);
+  console.log({ canvasHistory, canvasState });
   const canvasRef: any = useRef();
   // const { editor, onReady, selectedObjects } = useFabricJSEditor();
   const [snapshot] = useState<ISnapshot>({
@@ -75,25 +70,24 @@ export default function Editor(): React.ReactElement {
     canvas_bg: "#fff",
   });
   const [layers, setLayers] = useState<IObject[]>([]);
-  const { fonts } = useFonts();
   const [currentObject, setCurrentObject] = useState<any>({});
-  const [zoomData, setZoomData] = useState({
-    type: true,
-    limitToBounds: true,
-    panningEnabled: true,
-    transformEnabled: true,
-    pinchEnabled: true,
-    limitToWrapper: false,
-    disabled: false,
-    dbClickEnabled: true,
-    lockAxisX: false,
-    lockAxisY: false,
-    velocityEqualToMove: true,
-    enableWheel: true,
-    enableTouchPadPinch: true,
-    enableVelocity: true,
-    limitsOnWheel: false,
-  });
+  // const [zoomData, setZoomData] = useState({
+  //   type: true,
+  //   limitToBounds: true,
+  //   panningEnabled: true,
+  //   transformEnabled: true,
+  //   pinchEnabled: true,
+  //   limitToWrapper: false,
+  //   disabled: false,
+  //   dbClickEnabled: true,
+  //   lockAxisX: false,
+  //   lockAxisY: false,
+  //   velocityEqualToMove: true,
+  //   enableWheel: true,
+  //   enableTouchPadPinch: true,
+  //   enableVelocity: true,
+  //   limitsOnWheel: false,
+  // });
 
   const onObjectModified = useCallback(
     (e: any) => {
@@ -102,8 +96,8 @@ export default function Editor(): React.ReactElement {
       setCanvasHistory((history: any) =>
         [...history, newCanvasState].slice(-4)
       );
-      setCurrentObject((prev: any) => ({ ...e.target }));
-      setLayers((prev) => [...e.target.canvas.getObjects()]);
+      setCurrentObject(() => ({ ...e.target }));
+      setLayers(() => [...e.target.canvas.getObjects()]);
     },
     [setCanvasState, setCanvasHistory]
   );
@@ -121,16 +115,16 @@ export default function Editor(): React.ReactElement {
     canvas.on("object:modified", onObjectModified);
     canvas.on("objects:scaling", (e: any) => handleScaling(e));
     canvas.on("object:added", (e: any) =>
-      setCurrentObject((prev: any) => ({ ...e.target }))
+      setCurrentObject(() => ({ ...e.target }))
     );
-    canvas.on("object:removed", (e: any) =>
-      setCurrentObject((prev: any) => ({ ...{} }))
+    canvas.on("object:removed", () =>
+      setCurrentObject(() => ({ ...{} }))
     );
     canvas.on("selection:created", () =>
-      setCurrentObject((prev: any) => ({ ...canvas.getActiveObject() }))
+      setCurrentObject(() => ({ ...canvas.getActiveObject() }))
     );
     canvas.on("selection:updated", () =>
-      setCurrentObject((prev: any) => ({ ...canvas.getActiveObject() }))
+      setCurrentObject(() => ({ ...canvas.getActiveObject() }))
     );
     setCanvas(canvas);
 
@@ -168,6 +162,7 @@ export default function Editor(): React.ReactElement {
   }
 
   function onKeyDown(keyname: string, e: any, handle: any) {
+    console.log({ keyname, e, handle });
     if (keyname === "backspace" || keyname === "delete") {
       e.preventDefault();
       removeObject();

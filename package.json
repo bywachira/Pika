@@ -14,6 +14,9 @@
     "api:build": "yarn --cwd packages/api build",
     "api:start": "yarn --cwd packages/api start",
     "api:dev": "yarn --cwd packages/api dev",
+    "frontend:build": "yarn --cwd packages/frontend build",
+    "frontend:start": "yarn --cwd packages/frontend start",
+    "frontend:dev": "yarn --cwd packages/frontend dev",
     "test": "yarn --cwd packages/api test"
   }
 }

@@ -1,6 +1,5 @@
 import React from "react";
 import { css } from "goober";
-import { useAuth } from "../auth";
 import Nav from "../components/nav";
 import { AppContent, PageLayout } from "../components/nav/styled-components";
 import { getCurrentPageLayout as getLayout } from "../layouts";
@@ -11,8 +10,6 @@ const SideMenuContainer = css`
 `;
 
 function Dashboard(): React.ReactElement {
-  const { account } = useAuth();
-
   return (
     <>
       <Nav />
