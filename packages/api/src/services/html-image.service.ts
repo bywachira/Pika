@@ -85,9 +85,7 @@ export default class HTMLImageService {
 
             return UPLOAD_DATA;
         } catch (error) {
-            throw {
-                ...error
-            }
+            throw error;
         }
     }
 

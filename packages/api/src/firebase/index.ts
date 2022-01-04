@@ -1,5 +1,5 @@
 import firebase from "firebase-admin";
-import credentials from "../generatewithpika-firebase-adminsdk-swuu9-b58d4f071a.json";
+import credentials from "../firebase-creds.json";
 
 const creds: any = credentials
 

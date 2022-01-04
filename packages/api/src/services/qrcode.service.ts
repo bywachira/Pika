@@ -19,7 +19,7 @@ export default class QRGeneratorService {
             const UPLOAD_DATA = new SpacesService().uploadToBucket(initQR, "image/png", "jpg", true)
 
             return UPLOAD_DATA;
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
             throw {
                 ...error

@@ -19,14 +19,21 @@ const InactiveNav = css`
   color: #888888;
 `;
 
-const LINKS: { label: string; route: string }[] = [
+const LINKS: { label: string; route: string; is_shipped: boolean }[] = [
   {
     label: "Dashboard",
     route: "/dashboard",
+    is_shipped: true,
   },
   {
-    label: "Editor",
+    label: "Images",
+    route: "/images",
+    is_shipped: true,
+  },
+  {
+    label: "Editor[soon]",
     route: "/editor",
+    is_shipped: false,
   },
 ];
 
@@ -41,7 +48,7 @@ export default function NavLinks() {
             key={idx}
             className={link.route === router.pathname ? ActiveNav : InactiveNav}
           >
-            <Link href={link.route} passHref={true}>
+            <Link href={link.is_shipped ? link.route : "#"} passHref={true}>
               <a>{link.label}</a>
             </Link>
           </div>

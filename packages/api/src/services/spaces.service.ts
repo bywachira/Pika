@@ -13,7 +13,7 @@ export default class SpacesService {
     constructor() {
         this.spacesEndpoint = new AWS.Endpoint("fra1.digitaloceanspaces.com");
         this.s3 = new AWS.S3({
-            endpoint: this.spacesEndpoint,
+            // endpoint: this.spacesEndpoint,
             accessKeyId: config.spaces.key,
             secretAccessKey: config.spaces.secret,
         })
@@ -41,7 +41,7 @@ export default class SpacesService {
             Key: `${uuid4()}.${fileExtension}`,
             ContentType: fileType,
             Body: file,
-            Bucket: BUCKETS.CACHELESS,
+            Bucket: "pika-images",
             ACL: "public-read"
         }
 

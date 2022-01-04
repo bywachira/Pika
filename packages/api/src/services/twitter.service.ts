@@ -70,7 +70,7 @@ class TwitterService {
         })
 
         return response.data;
-      } catch (error) {
+      } catch (error: any) {
         throw error.response.data
       }
     } catch (error) {
@@ -127,7 +127,7 @@ class TwitterService {
 
       return uploadData
 
-    } catch (error) {
+    } catch (error: any) {
       throw {
         ...error
       }

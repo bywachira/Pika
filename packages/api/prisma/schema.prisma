@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id               String       @id @default(uuid())
+  name             String
+  email            String
+  uid              String       @unique
+  email_verified   Boolean
+  avatar           String
+  third_party_auth String[]
+  account_plan     AccountPlan?
+  Images           Images[]
+}
+
+model AccountPlan {
+  id           String   @id @default(uuid())
+  account      Account  @relation(fields: [acc_id], references: [id])
+  current_plan String
+  acc_id       String   @unique
+  expires      DateTime
+  image_quota  Int      @default(150)
+  used_quota   Int      @default(0)
+}
+
+model Images {
+  id         String   @id @default(uuid())
+  account    Account  @relation(fields: [acc_id], references: [id])
+  acc_id     String
+  image      String
+  size       String
+  type       String
+  created_at DateTime
+  updated_at DateTime @updatedAt
+}

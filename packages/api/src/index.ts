@@ -31,14 +31,14 @@ app.use("/api", authRoutes);
 
 const port: any = process.env.PORT || 8900;
 
-mongoose.connect(config.database, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
-}, () => {
-    console.log("📀[database]: connected to the database successfully")
-})
+// mongoose.connect(config.database, {
+//     useNewUrlParser: true,
+//     useCreateIndex: true,
+//     useUnifiedTopology: true,
+//     useFindAndModify: false
+// }, () => {
+//     console.log("📀[database]: connected to the database successfully")
+// })
 
 
 app.listen(port, () => {

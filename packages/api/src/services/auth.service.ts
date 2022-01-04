@@ -1,5 +1,6 @@
-import Account from "../models/account";
+import { PrismaClient } from '@prisma/client'
 
+const prisma = new PrismaClient();
 export default class AuthService {
     constructor() { }
 
@@ -10,18 +11,20 @@ export default class AuthService {
         token: string;
         avatar: string;
     }) {
-        const account = await Account.findOne({ uid: payload.uid, email: payload.email })
+        const account = await prisma.account.findFirst({
+            where: { uid: payload.uid, email: payload.email }
+        })
 
         if (!account) {
-            const newAccount = Account.build({
-                uid: payload.uid,
-                name: payload.name,
-                email: payload.email,
-                email_verified: true,
-                avatar: payload.avatar
+            const newAccount = await prisma.account.create({
+                data: {
+                    uid: payload.uid,
+                    name: payload.name,
+                    email: payload.email,
+                    email_verified: true,
+                    avatar: payload.avatar
+                }
             })
-
-            await newAccount.save();
 
             return {
                 account: newAccount,
@@ -36,9 +39,14 @@ export default class AuthService {
     }
 
     public async getUserByUid(uid: string, email?: string) {
-        const account = await Account.findOne({
-            email,
-            uid
+        const account = await prisma.account.findFirst({
+            where: {
+                email,
+                uid
+            },
+            include: {
+                account_plan: true
+            }
         })
 
         return account
