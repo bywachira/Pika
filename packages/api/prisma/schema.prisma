@@ -11,15 +11,26 @@ generator client {
 }
 
 model Account {
-  id               String       @id @default(uuid())
+  id               String        @id @default(uuid())
   name             String
   email            String
-  uid              String       @unique
+  uid              String        @unique
   email_verified   Boolean
   avatar           String
   third_party_auth String[]
   account_plan     AccountPlan?
-  Images           Images[]
+  image            Images[]
+  credentials      Credentials[]
+}
+
+model Credentials {
+  id         String   @id @default(uuid())
+  api_key    String
+  api_uuid   String
+  account    Account  @relation(fields: [acc_id], references: [id])
+  acc_id     String
+  created_at DateTime
+  updated_at DateTime
 }
 
 model AccountPlan {
@@ -37,8 +48,11 @@ model Images {
   account    Account  @relation(fields: [acc_id], references: [id])
   acc_id     String
   image      String
-  size       String
+  size       String?
   type       String
+  etag       String
+  key        String
+  bucket     String
   created_at DateTime
   updated_at DateTime @updatedAt
 }

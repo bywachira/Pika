@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import TwitterService from "../services/twitter.service";
 
 export const generateFromTweet = (req: Request, res: Response) => {
-    new TwitterService(req.query.twitterURL).generateFromTweet("png").then(Res => {
+    new TwitterService(req.query.twitterURL).generateFromTweet(req.query.fileType).then(Res => {
         return res.status(201).json(Res)
     }).catch(err => {
         console.log(err)

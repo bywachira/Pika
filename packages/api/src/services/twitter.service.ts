@@ -81,7 +81,7 @@ class TwitterService {
     }
   }
 
-  public async generateFromTweet(fileType: string) {
+  public async generateFromTweet(fileType: any) {
     try {
       const twitterData: ITwitterResponse = await this.lookupTweet();
 
@@ -96,9 +96,10 @@ class TwitterService {
         extension: ""
       }
 
+      image = await this.htmlToBase64(twitterTemplate(twitterData))
+
       switch (fileType) {
         case "svg":
-          image = await this.htmlToBase64(twitterTemplate(twitterData))
           imageMeta = {
             image,
             type: "image/svg+xml",
@@ -106,7 +107,13 @@ class TwitterService {
           }
           break;
         case "png":
-          image = await this.htmlToBase64(twitterTemplate(twitterData))
+          imageMeta = {
+            image,
+            type: "image/png",
+            extension: "png"
+          }
+          break;
+        case "avif":
           imageMeta = {
             image,
             type: "image/avif",
@@ -114,7 +121,6 @@ class TwitterService {
           }
           break;
         default:
-          image = await this.htmlToBase64(twitterTemplate(twitterData))
           imageMeta = {
             image,
             type: "image/svg+xml",
@@ -141,13 +147,6 @@ class TwitterService {
     })
 
     return image
-
-    // response.writeHead(200, { "Content-Type": "image/png" });
-
-    // response.end(image, "binary")
-
-    // response.setHeader("Content-Type", "image/svg+xml")
-    // response.status(200).send(boilerplate)
   }
 }
 

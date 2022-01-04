@@ -58,4 +58,14 @@ export default class SpacesService {
             }
         }
     }
+
+    public async sizeOf(key: string, bucket: string) {
+        try {
+            const HEAD = await this.s3.headObject({ Key: key, Bucket: bucket }).promise()
+
+            return HEAD.ContentLength;
+        } catch (error: any) {
+            throw new Error(error.message)
+        }
+    }
 }
