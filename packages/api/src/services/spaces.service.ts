@@ -68,4 +68,19 @@ export default class SpacesService {
             throw new Error(error.message)
         }
     }
+
+    public deleteObjbect(key: string, bucket: string) {
+
+        const DELETE = new Promise((resolve, reject) => {
+            this.s3.deleteObject({ Key: key, Bucket: bucket }, (error: any, data: any) => {
+                if (error) {
+                    reject(error);
+                }
+
+                resolve(data);
+            })
+        })
+
+        return DELETE;
+    }
 }

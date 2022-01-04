@@ -29,8 +29,8 @@ model Credentials {
   api_uuid   String
   account    Account  @relation(fields: [acc_id], references: [id])
   acc_id     String
-  created_at DateTime
-  updated_at DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model AccountPlan {
@@ -53,6 +53,6 @@ model Images {
   etag       String
   key        String
   bucket     String
-  created_at DateTime
+  created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }

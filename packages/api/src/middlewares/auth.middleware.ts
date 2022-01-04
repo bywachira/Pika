@@ -6,7 +6,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
     const headerToken = req.headers.authorization;
 
     if (!headerToken) {
-        return response.send({ message: "Create an account or log in", logout: true }).status(401);
+        return res.send({ message: "Create an account or log in", logout: true }).status(401);
     }
 
     if (headerToken && headerToken.split(" ")[0] !== "Bearer") {
