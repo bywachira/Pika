@@ -1,9 +1,11 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import TwitterService from "../services/twitter.service";
 
-export const generateFromTweet = (req: Request, res: Response) => {
+export const generateFromTweet = (req: Request, res: Response, next: NextFunction) => {
     new TwitterService(req.query.twitterURL).generateFromTweet(req.query.fileType).then(Res => {
-        return res.status(201).json(Res)
+        res.locals.file_upload = Res;
+        res.locals.file_type = 'twitter';
+        next();
     }).catch(err => {
         console.log(err)
         res.status(err.status || 500).json({

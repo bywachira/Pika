@@ -2,16 +2,14 @@ import AWS from "aws-sdk";
 import atob from "atob";
 import { v4 as uuid4 } from "uuid"
 import config from "../config";
-import { BUCKETS } from "../utils/spaces"
 
 export default class SpacesService {
-    private spacesEndpoint: AWS.Endpoint;
+    // private spacesEndpoint: AWS.Endpoint;
     private s3: AWS.S3;
     private upload: AWS.S3.PutObjectOutput | null;
     private error: Error | null;
 
     constructor() {
-        this.spacesEndpoint = new AWS.Endpoint("fra1.digitaloceanspaces.com");
         this.s3 = new AWS.S3({
             // endpoint: this.spacesEndpoint,
             accessKeyId: config.spaces.key,

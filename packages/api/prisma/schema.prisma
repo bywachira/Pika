@@ -48,7 +48,7 @@ model Images {
   account    Account  @relation(fields: [acc_id], references: [id])
   acc_id     String
   image      String
-  size       String?
+  size       Int?
   type       String
   etag       String
   key        String

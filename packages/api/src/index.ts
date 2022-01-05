@@ -13,6 +13,7 @@ import authRoutes from "./routes/auth.routes";
 import thirdPartyRoutes from "./routes/third-party.routes";
 import { verifyAPIKey } from "./middlewares/api-key.middleware";
 import { authMiddleware } from "./middlewares/auth.middleware";
+import imagesRoutes from './routes/images.routes';
 
 const app = express();
 
@@ -28,6 +29,8 @@ app.use(cors())
 app.use("/api/generate", authMiddleware, twitterRoutes);
 app.use("/api/generate", authMiddleware, htmlImageRoutes);
 app.use("/api/generate", authMiddleware, qrImageRoutes);
+app.use("/api", authMiddleware, imagesRoutes);
+app.use("/public-api", verifyAPIKey, imagesRoutes);
 app.use("/public-api/generate", verifyAPIKey, twitterRoutes);
 app.use("/public-api/generate", verifyAPIKey, htmlImageRoutes);
 app.use("/public-api/generate", verifyAPIKey, qrImageRoutes);

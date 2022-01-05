@@ -1,10 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import QRCodeImageService from "../services/qrcode.service";
 
-export const generateQRCode = (req: Request, res: Response) => {
+export const generateQRCode = (req: Request, res: Response, next: NextFunction) => {
     new QRCodeImageService(req.body.text, req.body.options).generateQRCode()
         .then(Res => {
-            return res.status(201).json(Res)
+            res.locals.file_upload = Res;
+            res.locals.file_type = 'twitter';
+            next();
         })
         .catch(err => {
             console.log(err)
