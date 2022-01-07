@@ -4,17 +4,17 @@ import { promisify } from "util"
 import ExpressCache from "express-redis-cache";
 import config from "../config";
 
-const client: RedisClient = redis.createClient(config.redis)
+const redisClient: RedisClient = redis.createClient(config.redis)
 const expressClient = ExpressCache({
-    client,
+    client: redisClient,
     expire: 60
 })
 
-const ahget = promisify(client.hget).bind(client);
-const asmembers = promisify(client.smembers).bind(client);
-const ahkeys = promisify(client.hkeys).bind(client)
+const ahget = promisify(redisClient.hget).bind(redisClient);
+const asmembers = promisify(redisClient.smembers).bind(redisClient);
+const ahkeys = promisify(redisClient.hkeys).bind(redisClient)
 
-client.on("error", (err) => {
+redisClient.on("error", (err) => {
     console.log(`Error ${err}`)
 })
 
@@ -23,7 +23,7 @@ expressClient.on("connected", () => {
 })
 
 const saveToCache = (key: string, res: Response, controller: Function) => {
-    return client.get(key, async (err, result) => {
+    return redisClient.get(key, async (err, result) => {
         if (result) {
             const resultJSON = JSON.parse(result)
 
@@ -32,7 +32,7 @@ const saveToCache = (key: string, res: Response, controller: Function) => {
             const result = await controller()
 
             if (result.status === 200) {
-                client.setex(key, 3600, JSON.stringify(result))
+                redisClient.setex(key, 3600, JSON.stringify(result))
             }
 
             return res.status(200).json(result)
@@ -51,7 +51,7 @@ const getCache = async (key: string) => {
 }
 
 const fetchCache = (key: string, res: Response) => {
-    return client.get(key, async (err, result: any) => {
+    return redisClient.get(key, async (err, result: any) => {
 
         const resultJSON = JSON.parse(result)
 
@@ -60,13 +60,13 @@ const fetchCache = (key: string, res: Response) => {
 }
 
 const createCache = async (key: string, payload: any) => {
-    await client.setex(key, 3600, JSON.stringify(payload))
+    await redisClient.setex(key, 3600, JSON.stringify(payload))
 }
 
 export {
     saveToCache,
-    client,
     getCache,
+    redisClient,
     createCache,
     fetchCache,
     expressClient

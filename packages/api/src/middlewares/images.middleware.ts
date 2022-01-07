@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import ImageServices from '../services/image.service';
 
 export const getImages = (req: Request, res: Response, next: NextFunction) => {
-    new ImageServices(res.locals.account.id, null).getImages(
+    new ImageServices(res.locals.account.id, null, '').getImages(
         // @ts-ignore
         res.locals.account.id, req.query.limit, req.query.cursor, req.query.jump)
         .then(Res => {
@@ -17,7 +17,7 @@ export const getImages = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export const getImage = (req: Request, res: Response, next: NextFunction) => {
-    new ImageServices(res.locals.account.id, null).getImage(res.locals.account.id, req.params.image_id)
+    new ImageServices(res.locals.account.id, null, '').getImage(res.locals.account.id, req.params.image_id)
         .then(Res => {
             res.status(200).json(Res)
         })
@@ -30,7 +30,7 @@ export const getImage = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export const deleteImage = (req: Request, res: Response, next: NextFunction) => {
-    new ImageServices(res.locals.account.id, null).deleteImage(res.locals.account.id, req.params.image_id)
+    new ImageServices(res.locals.account.id, null, '').deleteImage(res.locals.account.id, req.params.image_id)
         .then(Res => {
             res.status(200).json(Res)
         })
@@ -43,7 +43,7 @@ export const deleteImage = (req: Request, res: Response, next: NextFunction) => 
 }
 
 export const saveImage = (req: Request, res: Response, next: NextFunction) => {
-    new ImageServices(res.locals.account.id, res.locals.file_upload.upload).saveImage()
+    new ImageServices(res.locals.account.id, res.locals.file_upload.upload, res.locals.file_type).saveImage()
         .then(Res => {
             res.status(201).json(Res)
         })

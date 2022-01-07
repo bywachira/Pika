@@ -5,7 +5,7 @@ export const generateQRCode = (req: Request, res: Response, next: NextFunction) 
     new QRCodeImageService(req.body.text, req.body.options).generateQRCode()
         .then(Res => {
             res.locals.file_upload = Res;
-            res.locals.file_type = 'twitter';
+            res.locals.file_type = 'qrcode';
             next();
         })
         .catch(err => {

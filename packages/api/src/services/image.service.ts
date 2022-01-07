@@ -7,11 +7,13 @@ const prisma = new PrismaClient();
 export default class ImageServices extends SpacesService {
     imagePayload?: any;
     accountId: string;
+    imageType: string;
 
-    constructor(accountId: string, imagePayload: any) {
+    constructor(accountId: string, imagePayload: any, imageType: string) {
         super();
         this.accountId = accountId;
         this.imagePayload = imagePayload;
+        this.imageType = imageType;
     };
 
     public async saveImage() {
@@ -23,7 +25,7 @@ export default class ImageServices extends SpacesService {
                     acc_id: this.accountId,
                     image: this.imagePayload.Location,
                     size: imageSize,
-                    type: this.imagePayload.Location.split('.')[1],
+                    type: this.imageType,
                     etag: this.imagePayload.ETag,
                     key: this.imagePayload.Key,
                     bucket: this.imagePayload.Bucket,
@@ -40,16 +42,19 @@ export default class ImageServices extends SpacesService {
         }
     }
 
-    public async getImages(acc_id: string, limit: number, cursor?: string, jump?: number) {
+    public async getImages(acc_id: string, limit: number, cursor?: string, jump?: string) {
         try {
             const pagination_condition: any = cursor ? {
-                skip: jump,
+                // @ts-ignore
+                skip: parseInt(jump, 10),
                 cursor: {
                     id: cursor,
                 },
-                take: limit,
+                // @ts-ignore
+                take: parseInt(limit, 10),
             } : {
-                take: limit,
+                // @ts-ignore
+                take: parseInt(limit, 10),
             };
 
             const images = await prisma.images.findMany({
@@ -65,7 +70,14 @@ export default class ImageServices extends SpacesService {
                 }
             });
 
-            return images;
+            const lastImageInResults = images[images.length - 1];
+
+            const newCursor = lastImageInResults?.id;
+
+            return {
+                images,
+                cursor: newCursor,
+            };
         } catch (error: any) {
             console.log(error);
             throw new Error(error.message);
