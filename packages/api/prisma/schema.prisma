@@ -34,13 +34,27 @@ model Credentials {
 }
 
 model AccountPlan {
-  id           String   @id @default(uuid())
-  account      Account  @relation(fields: [acc_id], references: [id])
-  current_plan String
-  acc_id       String   @unique
-  expires      DateTime
-  image_quota  Int      @default(150)
-  used_quota   Int      @default(0)
+  id                 String   @id @default(uuid())
+  account            Account  @relation(fields: [acc_id], references: [id])
+  current_plan       String
+  acc_id             String   @unique
+  paddle_product_id  String
+  paddle_customer_id String
+  is_active          Boolean  @default(false)
+  quota              Quota[]
+  expires            DateTime
+}
+
+model Quota {
+  id            String      @id @default(uuid())
+  plan          AccountPlan @relation(fields: [plan_id], references: [id])
+  plan_id       String
+  file_quota    Int         @default(50)
+  used_quota    Int         @default(0)
+  excess_quota  Int         @default(0)
+  storage_usage Int         @default(0)
+  start_date    DateTime    @default(now())
+  updated_at    DateTime    @updatedAt
 }
 
 model Images {

@@ -28,6 +28,7 @@
     "mongoose": "^5.11.18",
     "morgan": "^1.10.0",
     "node-html-to-image": "^3.1.0",
+    "paddle-sdk": "^2.3.0",
     "qrcode": "^1.4.4",
     "rate-limit-redis": "^2.1.0",
     "redis": "^3.0.2",
