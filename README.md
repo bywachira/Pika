@@ -1,2 +1,3 @@
-# monorepo-quickstart
-A template to quickly start working on projects inside a monorepo
+# Pika
+
+Generate marketting images via API
